@@ -15,4 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('apa');
+
+Route::get('/template', function () {
+    return view('template.master');
+});
+
+Route::get('/data', function () {
+    return view('template.data');
 });
