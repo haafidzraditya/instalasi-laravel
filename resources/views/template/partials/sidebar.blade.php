@@ -26,6 +26,11 @@
             <i class="fa-solid fa-chart-line"></i>
             <span>Data</span></a>
     </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{route('spp.index')}}">
+            <i class="fa-solid fa-dollar-sign"></i>
+            <span>Spp</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
