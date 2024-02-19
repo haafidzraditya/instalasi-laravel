@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SppController;
+use App\Http\Controllers\KelasController;
+use App\Http\Controllers\PetugasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +40,11 @@ Route::put('/spp/{id}', [SppController::class, 'update'])->name('spp.update');
 
 Route::delete('/spp/{id}', [SppController::class, 'destroy'])->name('spp.destroy');
 // End Spp
+
+Route::resource('kelas', KelasController::class)->parameters([
+    'kelas' => 'kelas'
+]);
+
+Route::resource('petugas', PetugasController::class)->parameters([
+    'petugas' => 'petugas'
+]);

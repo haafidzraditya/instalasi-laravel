@@ -31,6 +31,16 @@
             <i class="fa-solid fa-dollar-sign"></i>
             <span>Spp</span></a>
     </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{route('kelas.index')}}">
+            <i class="fa-solid fa-school"></i>
+            <span>Kelas</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{route('petugas.index')}}">
+            <i class="fa-solid fa-person"></i>
+            <span>Petugas</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
