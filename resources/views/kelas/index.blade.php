@@ -1,144 +1,97 @@
 @extends('template.master')
 
-@section('chart')
-@if ($message = Session::get('success'))
-<div class="alert alert-success alert-block">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    <strong>{{ $message }}</strong>
-</div>
-@endif
+@push('css')
+    <link href="{{ asset('sb_admin2/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="{{ asset('sb_admin2/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('sb_admin2/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
 
-<body id="page-top">
+@section('title', 'Aplikasi SPP | Data Kelas')
+@section('confirmDeleteName', 'Mau hapus data Kelas?')
+@section('header', 'Data Kelas')
 
-<!-- Page Wrapper -->
-<div id="wrapper">
+@section('button')
+    <a href="{{ route('kelas.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fa-solid fa-school fa-sm text-white-50"></i> Tambah Data Kelas</a>
+    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+@endsection
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">DataTables Kelas</h6>
-                        <a href="{{ route('kelas.create') }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fa fa-plus"></i><br>
-                            Tambah Kelas
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="table" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>NOMOR</th>
-                                        <th>KELAS</th>
-                                        <th>KOMPETENSI KEAHLIAN</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($kelas as $key => $value)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $value->nama_kelas }}</td>
-                                            <td>{{ $value->kompetensi_keahlian }}</td>
-                                            <td>
-                                                <a href="{{ route('kelas.show', $value->id_kelas) }}"
-                                                    class="btn btn-sm btn-info">
-                                                    Detail
-                                                </a>
-                                                <a href="{{ route('kelas.edit', $value->id_kelas) }}"
-                                                    class="btn btn-sm btn-primary">
-                                                    Edit
-                                                </a>
-                                                <form action="{{ route('kelas.destroy', $value->id_kelas) }}"
-                                                    method="POST" style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-
-                                    @empty
-                                        <tr>
-                                            <td>Data Masih Kosong</td>
-                                            <td>Data Masih Kosong</td>
-                                            <td>Data Masih Kosong</td>
-                                            <td>Data Masih Kosong</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+@section('rowTengah')
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
                 </div>
-
+            @endif
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Kelas</th>
+                            <th>Kompetensi Keahlian</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($kelases as $key => $kelas)
+                            <tr>
+                                <td>
+                                    {{ $key + 1 }}
+                                </td>
+                                <td>
+                                    {{ $kelas->nama_kelas }}
+                                </td>
+                                <td>
+                                    {{ $kelas->kompetensi_keahlian }}
+                                </td>
+                                <td>
+                                    <form action="{{ route('kelas.destroy', $kelas) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')">
+                                        <a href="{{ route('kelas.show', $kelas) }}" class="btn btn-sm btn-info"><i
+                                                class="fa-solid fa-circle-info pt-1"></i> Detail</a>
+                                        <a href="{{ route('kelas.edit', $kelas) }}" class="btn btn-sm btn-primary"><i
+                                                class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" value="Hapus"><i
+                                                class="fa-solid fa-trash-can"></i> Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center">Data Masih Kosong</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-            <!-- /.container-fluid -->
-
         </div>
-        <!-- End of Main Content -->
-
     </div>
-    <!-- End of Content Wrapper -->
-
-</div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="js/demo/datatables-demo.js"></script>
-
-</body>
-
-</html>
 @endsection
 
-@section('title')
-    Data
-@endsection
+@push('js')
+    <script src="{{ asset('sb_admin2/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('sb_admin2/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('sb_admin2/js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        $(function() {
+            $("#table").DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+@endpush

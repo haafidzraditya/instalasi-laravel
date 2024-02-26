@@ -1,44 +1,40 @@
 @extends('template.master')
 
-@section('chart')
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    Memerbarui Data SPP
-                </h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <form action="{{ route('spp.update', ['id' => $sppsEdit->id_spp]) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label for="nama">Tahun</label>
-                        <input type="number" name="tahun" class="form-control @error('nama') {{ 'is-invalid' }} @enderror" value="{{ $sppsEdit->tahun }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nama">Nominal</label>
-                        <input type="number" name="nominal" class="form-control @error('nama') {{ 'is-invalid' }} @enderror" value="{{ $sppsEdit->nominal }}" required>
-                    </div>
-                    @error('tahun')
-                    <span class="error invalid-feedback" style="display: inline">{{ $message }}</span>
-                @enderror
-                @error('nominal')
-                <span class="error invalid-feedback" style="display: inline">{{ $message }}</span>
-            @enderror
-                    <button type="submit" class="btn btn-primary">Update SPP</button>
-                </form>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>
-    <!-- /.col -->
-</div>
-@endsection
+@section('title', "Aplikasi SPP | Edit Data SPP")
 
-@section('title')
-    Data
+@section('header', 'Edit data Spp')
+
+@section('rowTengah')
+    <div class="col-lg-12">
+        <div class="p-5">
+            <form class="user" action="{{ route('spp.update', $spp->id_spp) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input type="text" name="tahun"
+                            class="form-control form-control-user @error('tahun') {{ 'is-invalid' }} @enderror"
+                            placeholder="Tahun" autocomplete="off" value="{{ $spp->tahun }}">
+                            @error('tahun')
+                                <span class="error invalid-feedback" style="display: inline">{{ $message }}</span>
+                            @enderror
+                    </div>
+
+                    <div class="col-sm-6">
+                        <input type="text" name="nominal"
+                            class="form-control form-control-user @error('nominal') {{ 'is-invalid' }} @enderror"
+                            placeholder="Nominal" autocomplete="off" value="{{ $spp->nominal }}">
+                            @error('nominal')
+                                <span class="error invalid-feedback" style="display: inline">{{ $message }}</span>
+                            @enderror
+                    </div>
+
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-100">Edit Data Spp</button>
+                </div>
+                <hr>
+            </form>
+        </div>
+    </div>
 @endsection

@@ -9,13 +9,13 @@
     <link href="{{ asset('sb_admin2/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endpush
 
-@section('title', 'Aplikasi SPP | Data SPP')
-@section('confirmDeleteName', 'spp')
-@section('header', 'Data Spp')
+@section('title', 'Aplikasi SPP | Data Siswa')
+@section('confirmDeleteName', 'Tindakan ini akan menghapus data pembayaran yang bersangkutan!')
+@section('header', 'Data Siswa')
 
 @section('button')
-    <a href="{{ route('spp.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fa-solid fa-hand-holding-dollar fa-sm text-white-50"></i> Tambah Data Spp</a>
+    <a href="{{ route('siswa.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fa-solid fa-person-circle-plus fa-sm text-white-50"></i> Tambah Data Siswa</a>
     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
 @endsection
@@ -34,30 +34,61 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Tahun</th>
-                            <th>Nominal</th>
+                            <th>Nisn</th>
+                            <th>Nis</th>
+                            <th>Nama</th>
+                            <th>Kelas</th>
+                            <th>Alamat</th>
+                            <th>No Hp</th>
+                            <th>Spp</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($spps as $key => $spp)
+                        @forelse ($siswas as $key => $siswa)
                             <tr>
                                 <td>
                                     {{ $key + 1 }}
                                 </td>
                                 <td>
-                                    {{ $spp->tahun }}
+                                    {{ str_pad($siswa->nisn, 10, '0', STR_PAD_LEFT) }}
                                 </td>
                                 <td>
-                                    Rp. {{ number_format($spp->nominal) }}
+                                    {{ $siswa->nis }}
                                 </td>
                                 <td>
-                                    <form action="{{ route('spp.destroy', $spp->id_spp) }}" method="POST"
-                                        onsubmit="return confirm('Yakin mau hapus data ini?')">
-                                        <a href="{{ route('spp.show', $spp->id_spp) }}" class="btn btn-sm btn-info"><i
-                                                class="fa-solid fa-circle-info pt-1"></i> Detail</a>
-                                        <a href="{{ route('spp.edit', $spp->id_spp) }}" class="btn btn-sm btn-primary"><i
-                                                class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                    {{ $siswa->nama }}
+                                </td>
+                                <td>
+                                    @foreach ($kelases as $kelas)
+                                        @if ($kelas->id_kelas == $siswa->id_kelas)
+                                            {{ $kelas->nama_kelas }} {{ $kelas->kompetensi_keahlian }}
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td>
+                                    {{ $siswa->alamat }}
+                                </td>
+                                <td>
+                                    {{ $siswa->no_telp }}
+                                </td>
+                                <td>
+                                    @foreach ($spps as $spp)
+                                        @if ($spp->id_spp == $siswa->id_spp)
+                                            Rp. {{ number_format($spp->nominal) }}
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td>
+                                    <form
+                                        action="{{ route('siswa.destroy', str_pad($siswa->nisn, 10, '0', STR_PAD_LEFT)) }}"
+                                        method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')">
+                                        <a href="{{ route('siswa.show', str_pad($siswa->nisn, 10, '0', STR_PAD_LEFT)) }}"
+                                            class="btn btn-sm btn-info"><i class="fa-solid fa-circle-info pt-1"></i>
+                                            Detail</a>
+                                        <a href="{{ route('siswa.edit', str_pad($siswa->nisn, 10, '0', STR_PAD_LEFT)) }}"
+                                            class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i>
+                                            Edit</a>
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" value="Hapus"><i
@@ -67,7 +98,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center">Data Masih Kosong</td>
+                                <td colspan="9" class="text-center">Data Masih Kosong</td>
                             </tr>
                         @endforelse
                     </tbody>

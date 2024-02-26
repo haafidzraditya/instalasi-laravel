@@ -9,22 +9,24 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>@yield('title')</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('sbAdmin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('sb_admin2/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('sbAdmin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('sb_admin2/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+    @stack('css')
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -43,7 +45,7 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                @include('template.partials.main')
+                @include('template.main')
                 <!-- /.container-fluid -->
 
             </div>
@@ -85,22 +87,43 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('sbAdmin/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('sbAdmin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('sb_admin2/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('sb_admin2/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('sbAdmin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('sb_admin2/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('sbAdmin/js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ asset('sb_admin2/js/sb-admin-2.min.js') }}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ asset('sbAdmin/vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('sb_admin2/vendor/chart.js/Chart.min.js') }}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('sbAdmin/js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('sbAdmin/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('sb_admin2/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('sb_admin2/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('sb_admin2/js/demo/chart-bar-demo.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete() {
+            Swal.fire({
+                title: "Yakin?",
+                text: "@yield('confirmDeleteName')",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-delete').submit();
+                }
+            });
+            return false;
+        }
+    </script>
 
+    @stack('js')
 </body>
 
 </html>
